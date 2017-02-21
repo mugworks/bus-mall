@@ -1,0 +1,9 @@
+div {
+    width: 90%;
+    /*height: 500px;*/
+}
+
+#one, #two, #three {
+    width: 30%;
+    border: 2px solid black;
+}
