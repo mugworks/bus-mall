@@ -2,7 +2,7 @@
 
 var totalClicks = 0; //keeps track of # times user has clicked on images
 
-
+var previousImages = [0, 1, 2];
 
 function ProductImage(fileName) {
   this.name = fileName.split('.')[0];
@@ -49,38 +49,29 @@ function getThreeImages() {
   var array = [];
   var rand;
   for (var y = 0; y < productArray.length; y++) {
-    array[y] = y;
+    if (previousImages.indexOf(y) === -1) {
+      array.push(y);
+    }
   }
+  console.log(array);
   rand = Math.floor(Math.random() * array.length);
   var j = array[rand];
+  console.log('j ',j, rand);
   array.splice(rand,1);
   rand = Math.floor(Math.random() * array.length);
   var k = array[rand];
+  console.log('k ',k, rand);
   array.splice(rand,1);
   rand = Math.floor(Math.random() * array.length);
   var m = array[rand];
   array.splice(rand, 1);
+  console.log('m:',m, rand);
 
   setAttributes(j, k, m);
   incrementNumShown(j, k, m);
+  previousImages = [j, k, m];
 
-// This is also code I'm looking at to compare 3 images to the previous 3
-  // rand = Math.floor(Math.random() * array.length);
-  // var t = array[rand];
-  // array.splice(rand, 1);
-  // var u = array[rand];
-  // array.splice(rand, 1);
-  // var v = array[rand];
-  // array.splice(rand, 1);
-  // array.push(j);
-  // array.push(k);
-  // array.push(m);
-
-  // j = t;
-  // k = u;
-  // m = v;
-  // previousArray = [j, k, m];
-  // console.log(previousArray);
+  console.log(previousImages);
 }
 function setAttributes(j, k, m) {
   imgTag1.setAttribute ('src', productArray[j].filePath);
