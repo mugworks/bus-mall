@@ -3,6 +3,7 @@
 var totalClicks = 0; //keeps track of # times user has clicked on images
 
 var previousImages = [0, 1, 2];
+var storedItems;
 
 function ProductImage(fileName) {
   this.name = fileName.split('.')[0];
@@ -53,25 +54,20 @@ function getThreeImages() {
       array.push(y);
     }
   }
-  console.log(array);
   rand = Math.floor(Math.random() * array.length);
   var j = array[rand];
-  console.log('j ',j, rand);
   array.splice(rand,1);
   rand = Math.floor(Math.random() * array.length);
   var k = array[rand];
-  console.log('k ',k, rand);
   array.splice(rand,1);
   rand = Math.floor(Math.random() * array.length);
   var m = array[rand];
   array.splice(rand, 1);
-  console.log('m:',m, rand);
 
   setAttributes(j, k, m);
   incrementNumShown(j, k, m);
   previousImages = [j, k, m];
 
-  console.log(previousImages);
 }
 function setAttributes(j, k, m) {
   imgTag1.setAttribute ('src', productArray[j].filePath);
@@ -104,7 +100,22 @@ imgTag1.addEventListener('click', clickHandler);
 imgTag2.addEventListener('click', clickHandler);
 imgTag3.addEventListener('click', clickHandler);
 function finished() {
+  storeDataLocally();
   alert ('Thank you for providing input on our products! The results of your selections can be seen below.');
+
+//Store data
+  function storeDataLocally() {
+    var imgs = productArray;
+    storedItems = JSON.stringify(imgs);
+    console.log(storedItems);
+    localStorage.setItem('imgs', storedItems);
+  }
+
+
+
+
+//Create chart
+
   var ctx = document.getElementById('selectionChart');
 
   var labelNames = [];
