@@ -11,7 +11,7 @@ function ProductImage(fileName) {
   this.numClicks = 0;
 }
 
-var fileNames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg'];
+var fileNames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
 var productArray = [];
 for (var i = 0; i < fileNames.length; i++) {
   productArray.push(new ProductImage(fileNames[i]));
@@ -21,56 +21,26 @@ var imgTag1 = document.getElementById('one');
 var imgTag2 = document.getElementById('two');
 var imgTag3 = document.getElementById('three');
 
+//This is code I am testing to keep the previous 3 images from being the same
 
-
-// var array = [];
-// var rand;
-// for (var y = 0; y < productArray.length; y++) {
-//   array[y] = y;
-// }
-// rand = Math.floor(Math.random() * array.length);
-// var j = array[rand];
-// array.splice(rand,1);
-// rand = Math.floor(Math.random() * array.length);
-// var k = array[rand];
-// array.splice(rand,1);
-// rand = Math.floor(Math.random() * array.length);
-// var m = array[rand];
-// imgTag1.setAttribute ('src', productArray[j].filePath);
-// imgTag2.setAttribute ('src', productArray[k].filePath);
-// imgTag3.setAttribute ('src', productArray[m].filePath);
-// console.log(j);
-// console.log(k);
-// console.log(m);
-// var previousArray = [j, k, m];
-// console.log(previousArray, 'here');
-// var large;
-// var medium;
-// var small;
-// for (y = 0; y < productArray.length; y++) {  //new code for previous array
-//   array[y] = y;
-// }
-// if (j > k) {
-//   if (j > m) {
-//     large = j;
-//     if (k > m) {
-//       medium = k;
-//       small = m;
-//     } else {
-//       medium = m;
-//       small = k;
-//     }
-//   } else if (k > m){
-//     large = k;
-//     if (m > j) {
-//       medium = m;
-//       small = j;
-//     } else {
-//       medium = j;
-//       small = m;
-//     }
+// initiateThreeImagesOut();
+// function initiateThreeImagesOut() {
+//   var array = [];
+//   var rand;
+//   for (var y = 0; y < productArray.length; y++) {
+//     array[y] = y;
 //   }
+//   rand = Math.floor(Math.random() * array.length);
+//   var j = array[rand];
+//   array.splice(rand,1);
+//   rand = Math.floor(Math.random() * array.length);
+//   var k = array[rand];
+//   array.splice(rand,1);
+//   rand = Math.floor(Math.random() * array.length);
+//   var m = array[rand];
+//   array.splice(rand, 1);
 // }
+
 
 
 
@@ -89,11 +59,26 @@ function getThreeImages() {
   array.splice(rand,1);
   rand = Math.floor(Math.random() * array.length);
   var m = array[rand];
-  console.log(j);
-  console.log(k);
-  console.log(m);
+  array.splice(rand, 1);
+
   setAttributes(j, k, m);
   incrementNumShown(j, k, m);
+
+// This is also code I'm looking at to compare 3 images to the previous 3
+  // rand = Math.floor(Math.random() * array.length);
+  // var t = array[rand];
+  // array.splice(rand, 1);
+  // var u = array[rand];
+  // array.splice(rand, 1);
+  // var v = array[rand];
+  // array.splice(rand, 1);
+  // array.push(j);
+  // array.push(k);
+  // array.push(m);
+
+  // j = t;
+  // k = u;
+  // m = v;
   // previousArray = [j, k, m];
   // console.log(previousArray);
 }
@@ -109,17 +94,12 @@ function incrementNumShown(j, k, m) {
 }
 
 
-function finished() {
-  console.log('done');
-}
-
 function clickHandler(event) {
   var clickedImage = event.target.getAttribute('src');
   for (var i = 0; i < productArray.length; i++) {
     if (clickedImage == productArray[i].filePath) {
-      // console.log(productArray[i].numShown);
-      productArray[i].numClicks += 1;
-      totalClicks += 1;
+      productArray[i].numClicks++;
+      totalClicks++;
       if (totalClicks === 25) {
         finished();
         return;
@@ -127,43 +107,88 @@ function clickHandler(event) {
       getThreeImages();
     }
   };
-  console.log(totalClicks);
 }
 
 imgTag1.addEventListener('click', clickHandler);
 imgTag2.addEventListener('click', clickHandler);
 imgTag3.addEventListener('click', clickHandler);
+function finished() {
+  alert ('Thank you for providing input on our products! The results of your selections can be seen below.');
+  var ctx = document.getElementById('selectionChart');
 
-var ctx = document.getElementById('selectionChart');
-
-var chartConfig = {
-  type: 'bar',
-  data: {
-    labels: ['bag', 'banana', 'bathroom'],  //put the image names here
-    datasets: [{
-      label: 'times clicked',
-      data: [3, 7, 4],        //put the number of times clicked here
-      backgroundColor: [
-        'rgba(255, 0, 0, .5)', //figure out how to alternate colors
-        'rgba(0, 255, 0, .5)',
-        'rgba(0, 0, 255, .5)'
-      ],
-      borderColor: [
-        'rgba(0, 0, 0, 1)',
-        'rgba(0, 0, 0, 1)',
-        'rgba(0, 0, 0, 1)'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero:true
-        }
-      }]
-    }
+  var labelNames = [];
+  var dataPoints = [];
+  var numVotes = [];
+  for (var i = 0; i < productArray.length; i++) {
+    labelNames.push(productArray[i].name);
+    dataPoints.push(productArray[i].numShown);
+    numVotes.push(productArray[i].numClicks);
   }
-};
-var renderedChart = new Chart(ctx, chartConfig);
+
+
+  var chartConfig = {
+    type: 'bar',
+    data: {
+      labels: labelNames,
+      datasets: [{
+        label: '# of Votes',
+        data: numVotes,        //put the number of times clicked here
+        backgroundColor: [
+          'rgba(255, 0, 0, 1)',
+          'rgba(0, 255, 0, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(255, 255, 0, 1)',
+          'rgba(0, 255, 255, 1)',
+          'rgba(255, 0, 255, 1)',
+          'rgba(255, 100, 0, .75)',
+          'rgba(0, 255, 100, .75)',
+          'rgba(100, 0, 255, .75)',
+          'rgba(255, 0, 100, .75)',
+          'rgba(255, 0, 0, 1)',
+          'rgba(0, 255, 0, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(255, 255, 0, 1)',
+          'rgba(0, 255, 255, 1)',
+          'rgba(255, 0, 255, 1)',
+          'rgba(255, 100, 0, .75)',
+          'rgba(0, 255, 100, .75)',
+          'rgba(100, 0, 255, .75)',
+          'rgba(255, 0, 100, .75)'
+        ],
+        borderColor: [
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)',
+          'rgba(0, 0, 0, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero:true
+          }
+        }]
+      }
+    }
+  };
+  var renderedChart = new Chart(ctx, chartConfig);
+}
