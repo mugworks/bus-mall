@@ -4,6 +4,7 @@ var totalClicks = 0; //keeps track of # times user has clicked on images
 
 var previousImages = [0, 1, 2];
 var storedItems;
+var imgs;
 
 function ProductImage(fileName) {
   this.name = fileName.split('.')[0];
@@ -14,33 +15,20 @@ function ProductImage(fileName) {
 
 var fileNames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
 var productArray = [];
-for (var i = 0; i < fileNames.length; i++) {
-  productArray.push(new ProductImage(fileNames[i]));
-}
 
 var imgTag1 = document.getElementById('one');
 var imgTag2 = document.getElementById('two');
 var imgTag3 = document.getElementById('three');
 
-//This is code I am testing to keep the previous 3 images from being the same
-
-// initiateThreeImagesOut();
-// function initiateThreeImagesOut() {
-//   var array = [];
-//   var rand;
-//   for (var y = 0; y < productArray.length; y++) {
-//     array[y] = y;
-//   }
-//   rand = Math.floor(Math.random() * array.length);
-//   var j = array[rand];
-//   array.splice(rand,1);
-//   rand = Math.floor(Math.random() * array.length);
-//   var k = array[rand];
-//   array.splice(rand,1);
-//   rand = Math.floor(Math.random() * array.length);
-//   var m = array[rand];
-//   array.splice(rand, 1);
-// }
+// Pulling info from local storage
+var imgString = localStorage.getItem('imgs');
+if (imgString) {
+  productArray = JSON.parse(imgString);
+} else {
+  for (var i = 0; i < fileNames.length; i++) {
+    productArray.push(new ProductImage(fileNames[i]));
+  }
+}
 
 
 
@@ -87,7 +75,7 @@ function clickHandler(event) {
     if (clickedImage == productArray[i].filePath) {
       productArray[i].numClicks++;
       totalClicks++;
-      if (totalClicks === 25) {
+      if (totalClicks === 5) {             //CHANGE THIS BACK TO 25
         finished();
         return;
       }
@@ -100,14 +88,15 @@ imgTag1.addEventListener('click', clickHandler);
 imgTag2.addEventListener('click', clickHandler);
 imgTag3.addEventListener('click', clickHandler);
 function finished() {
+  renderTableBody();
   storeDataLocally();
   alert ('Thank you for providing input on our products! The results of your selections can be seen below.');
 
 //Store data
   function storeDataLocally() {
-    var imgs = productArray;
-    storedItems = JSON.stringify(imgs);
-    console.log(storedItems);
+    imgs = productArray;
+    storedItems = JSON.stringify(productArray);
+    console.log('this is being stored ', storedItems);
     localStorage.setItem('imgs', storedItems);
   }
 
@@ -193,4 +182,48 @@ function finished() {
     }
   };
   var renderedChart = new Chart(ctx, chartConfig);
+}
+
+//Create Table
+function renderTableBody() {
+  var storeTable = document.getElementById('data-table');
+  var tableHeader = document.createElement('th');
+  tableHeader.textContent = 'Items';
+  storeTable.appendChild(tableHeader);
+  tableHeader = document.createElement('th');
+  tableHeader.textContent = 'Views';
+  storeTable.appendChild(tableHeader);
+  tableHeader = document.createElement('th');
+  tableHeader.textContent = 'Clicks';
+  storeTable.appendChild(tableHeader);
+  tableHeader = document.createElement('th');
+  tableHeader.textContent = '% of clicks when viewed';
+  storeTable.appendChild(tableHeader);
+  tableHeader = document.createElement('th');
+  tableHeader.textContent = 'Recommended?';
+  storeTable.appendChild(tableHeader);
+  for (i = 0; i < productArray.length; i++) {
+    var tableRow = document.createElement('tr');
+    var tableRowHeader = document.createElement('th');
+    tableRowHeader.textContent = productArray[i].name;
+    tableRow.appendChild(tableRowHeader);
+    var tableRowCell = document.createElement('td');
+    tableRowCell.textContent = productArray[i].numShown;
+    tableRow.appendChild(tableRowCell);
+    tableRowCell = document.createElement('td');
+    tableRowCell.textContent = productArray[i].numClicks;
+    tableRow.appendChild(tableRowCell);
+    tableRowCell = document.createElement('td');
+    var percent = (productArray[i].numClicks / productArray[i].numShown * 100).toFixed(2);
+    tableRowCell.textContent = percent + '%';
+    tableRow.appendChild(tableRowCell);
+    tableRowCell = document.createElement('td');
+    if (percent > 40) {
+      tableRowCell.textContent = 'YES';
+    } else {
+      tableRowCell.textContent = 'NO';
+    }
+    tableRow.appendChild(tableRowCell);
+    storeTable.appendChild(tableRow);
+  }
 }
