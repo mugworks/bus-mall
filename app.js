@@ -87,6 +87,8 @@ function clickHandler(event) {
 imgTag1.addEventListener('click', clickHandler);
 imgTag2.addEventListener('click', clickHandler);
 imgTag3.addEventListener('click', clickHandler);
+
+
 function finished() {
   renderTableBody();
   storeDataLocally();
