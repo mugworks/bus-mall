@@ -1,9 +1,35 @@
 div {
     width: 90%;
+    margin: 20px auto;
     }
 
 #one, #two, #three {
     width: 30%;
     border: 5px solid darkgray;
     max-height: 400px;
+}
+
+table {
+    width: 60%;
+    margin: 0px auto;
+    border: 1px solid black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+th {
+    width: 100px;
+    background-color: #005599;
+    height: 50px;
+    color: greenyellow;
+    text-align: center;
+}
+
+td {
+    text-align: center;
+    border: 1px solid black;
+}
+
+td [value="YES"] {
+    color:red;
 }

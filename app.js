@@ -75,7 +75,7 @@ function clickHandler(event) {
     if (clickedImage == productArray[i].filePath) {
       productArray[i].numClicks++;
       totalClicks++;
-      if (totalClicks === 5) {             //CHANGE THIS BACK TO 25
+      if (totalClicks === 25) {
         finished();
         return;
       }
@@ -218,8 +218,9 @@ function renderTableBody() {
     tableRowCell.textContent = percent + '%';
     tableRow.appendChild(tableRowCell);
     tableRowCell = document.createElement('td');
-    if (percent > 40) {
+    if (percent >= 40) {
       tableRowCell.textContent = 'YES';
+      tableRowCell.style.backgroundColor = 'red';
     } else {
       tableRowCell.textContent = 'NO';
     }
